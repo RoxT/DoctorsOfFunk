@@ -33,12 +33,31 @@ Hello World
         scene: {
             preload: preload,
             create: create,
-            update: update,
-            render: render
+            update: update
         }
     };
 
     var game = new Phaser.Game(config);
+
+    var knob1 = {
+        // Must initialize in create
+        create(game){
+            game.add.image(400, 300, 'knob-round');
+            this.tick = game.add.image(400, 300, 'knob-tick');
+            this.static = game.sound.add('static');
+            this.static.play({
+                loop: true
+            });
+        },
+        turnLeft(){
+            this.tick.setAngle(this.tick.angle - rotationSpeed);
+            setVolume(this.static, -soundSpeed);
+        },
+        turnRight(){
+            this.tick.setAngle(this.tick.angle + rotationSpeed);
+            setVolume(this.static, soundSpeed);
+        }
+    }
 
     function preload ()
     {
@@ -55,10 +74,6 @@ Hello World
     function create ()
     {
         this.add.image(400, 300, 'sky');
-        static = this.sound.add('static');
-        static.play({
-            loop: true
-        });
 
         var particles = this.add.particles('red');
 
@@ -77,8 +92,7 @@ Hello World
         emitter.startFollow(logo);
 
         // ------ Real stuff below, broken green boxes above
-        tick = this.add.image(400, 300, 'knob-tick');
-        this.add.image(400, 300, 'knob-round');
+        knob1.create(this);
 
         volumeText = this.add.text(16, 16, 'volume: 1', { fontSize: '32px', fill: '#000' });
 
@@ -91,13 +105,11 @@ Hello World
     {
         if (cursors.left.isDown)
         {
-            tick.setAngle(tick.angle - rotationSpeed);
-            setVolume(static, -soundSpeed);
+            knob1.turnLeft()
         }
         else if (cursors.right.isDown)
         {
-            tick.setAngle(tick.angle + rotationSpeed);
-            setVolume(static, soundSpeed);
+            knob1.turnRight();
         }
     }
 
@@ -109,9 +121,9 @@ Hello World
         volumeText.setText("Volume: " + sound.volume)
     }
 
-    function render() {
-        game.debug.soundInfo(static, 20, 32);
-    }
+    
+
+
     </script>
 </body>
 </html>
