@@ -11,20 +11,20 @@
   </head>
 
   <body>
-
     <script>
-      var introText = "The year is 2100.\n" + 
-        "Robotkind is in the depths of a cold civil war, a \n" + 
-        "quiet seeming peace after many years of large \n" + 
-        "casualties. The real war is fought by spys.\n" + 
-        "Your enemies are rumoured to have found some kind of\n" + 
-        "map that leads to a lab where robots were first \n" + 
+      var introText =
+        "The year is 2100.\n" +
+        "Robotkind is in the depths of a cold civil war, a \n" +
+        "quiet seeming peace after many years of large \n" +
+        "casualties. The real war is fought by spys.\n" +
+        "Your enemies are rumoured to have found some kind of\n" +
+        "map that leads to a lab where robots were first \n" +
         "created. It was found by civian archeologists during \n" +
         "a dig, and is now in a guarded underground facility \n" +
         "along with other artifacts of its time: the 1980's.\n" +
         "Press enter to continue";
 
-      var handlerText = 
+      var handlerText =
         "Handler: Bzzzt. Hello? Agent? Are you recieveing my \n" +
         "transmission? We've got a robot on the inside who \n" +
         "left messages encrypted in the old technology there.\n" +
@@ -32,18 +32,18 @@
         "keys to tune the frequency until it sounds normal.\n" +
         "Then click the sync button and I can tell you if \n" +
         "its correctly getting through to us";
-      var roundTwoText = 
-        "Handler: Great job Agent. There are two more \n" + 
-        "frequencies that need to be tuned. \n" + 
+      var roundTwoText =
+        "Handler: Great job Agent. There are two more \n" +
+        "frequencies that need to be tuned. \n" +
         "Use your space bar to toggle between them.";
 
-      var endText = "You did it! 80's dance party starts now! Press Enter to continue"; 
+      var endText =
+        "You did it! 80's dance party starts now! Press Enter to continue";
 
       var rotationSpeed = 2;
       var detuneSpeed = 1;
 
       var config = {
-
         type: Phaser.AUTO,
         width: 800,
         height: 600,
@@ -67,368 +67,392 @@
       var knobsY = 350;
       var tuningBound = 1000;
 
-    var knob1 = {
+      var knob1 = {
         // Must initialize in create
         setSound(key) {
-            this.sound = gameObj.sound.add(key);
+          this.sound = gameObj.sound.add(key);
         },
-        initialize(soundName, index){          
-            this.tick = gameObj.add.image(200+(200*index), knobsY, 'knob-tick');
-            gameObj.add.image(200+(200*index), knobsY, 'knob-round');
-            gameObj.add.image(200+(200*index), knobsY, 'LEDOff');
-            this.led = gameObj.add.image(200+(200*index), knobsY, 'LEDOn');
-            this.led.setVisible(false);
-            // this.sound = gameObj.sound.add(soundName);
-            this.sound.setDetune(randomDetune());
-            this.sound.play({
-                loop: true
-            });
-            this.index = index;
-            this.debugName = 'Detune' + this.index + ': ';
-            this.text = gameObj.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
-                { fontSize: '16px', fill: '#000' });
+        initialize(soundName, index) {
+          this.tick = gameObj.add.image(200 + 200 * index, knobsY, "knob-tick");
+          gameObj.add.image(200 + 200 * index, knobsY, "knob-round");
+          gameObj.add.image(200 + 200 * index, knobsY, "LEDOff");
+          this.led = gameObj.add.image(200 + 200 * index, knobsY, "LEDOn");
+          this.led.setVisible(false);
+          // this.sound = gameObj.sound.add(soundName);
+          this.sound.setDetune(randomDetune());
+          this.sound.play({
+            loop: true,
+          });
+          this.index = index;
+          this.debugName = "Detune" + this.index + ": ";
+          this.text = gameObj.add.text(
+            16,
+            40 * (this.index + 1),
+            this.debugName + this.sound.detune,
+            { fontSize: "16px", fill: "#000" }
+          );
         },
-        turnLeft(){
-            if (this.sound.detune >= -tuningBound) 
-            {
-                this.tick.setAngle(this.tick.angle - rotationSpeed);
-                newVal = changeDetune(this.sound, -detuneSpeed);
-                this.text.setText(this.debugName + newVal);
-            }
+        turnLeft() {
+          if (this.sound.detune >= -tuningBound) {
+            this.tick.setAngle(this.tick.angle - rotationSpeed);
+            newVal = changeDetune(this.sound, -detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+          }
         },
-        turnRight(){
-            if (this.sound.detune <= tuningBound)
-            {
-                this.tick.setAngle(this.tick.angle + rotationSpeed);
-                newVal = changeDetune(this.sound, detuneSpeed);
-                this.text.setText(this.debugName + newVal);
-            }
+        turnRight() {
+          if (this.sound.detune <= tuningBound) {
+            this.tick.setAngle(this.tick.angle + rotationSpeed);
+            newVal = changeDetune(this.sound, detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+          }
         },
-        toggleOff(){
-            this.led.setVisible(false)
+        toggleOff() {
+          this.led.setVisible(false);
         },
-        toggleOn(){
-            this.led.setVisible(true)
+        toggleOn() {
+          this.led.setVisible(true);
         },
-        below: { x: 200+(200*this.index), y: 400},
-        restart(){
-            this.sound.restart();
+        below: { x: 200 + 200 * this.index, y: 400 },
+        restart() {
+          this.sound.restart();
         },
         tuned() {
-            return (this.sound.detune > -75 && this.sound.detune < 75) 
-        }
-    }
+          return this.sound.detune > -75 && this.sound.detune < 75;
+        },
+      };
 
-    var knob2 = {
+      var knob2 = {
         // Must initialize in create
         setSound(key) {
-            this.sound = gameObj.sound.add(key);
+          this.sound = gameObj.sound.add(key);
         },
-        initialize(soundName, index){          
-            this.tick = gameObj.add.image(200+(200*index), knobsY, 'knob-tick');
-            gameObj.add.image(200+(200*index), knobsY, 'knob-round');
-            gameObj.add.image(200+(200*index), knobsY, 'LEDOff');
-            this.led = gameObj.add.image(200+(200*index), knobsY, 'LEDOn');
-            this.led.setVisible(false);
-            // this.sound = gameObj.sound.add(soundName);
-            this.sound.setDetune(randomDetune());
-            this.sound.play({
-                loop: true
-            });
-            this.index = index;
-            this.debugName = 'Detune' + this.index + ': ';
-            this.text = gameObj.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
-                { fontSize: '16px', fill: '#000' });
+        initialize(soundName, index) {
+          this.tick = gameObj.add.image(200 + 200 * index, knobsY, "knob-tick");
+          gameObj.add.image(200 + 200 * index, knobsY, "knob-round");
+          gameObj.add.image(200 + 200 * index, knobsY, "LEDOff");
+          this.led = gameObj.add.image(200 + 200 * index, knobsY, "LEDOn");
+          this.led.setVisible(false);
+          // this.sound = gameObj.sound.add(soundName);
+          this.sound.setDetune(randomDetune());
+          this.sound.play({
+            loop: true,
+          });
+          this.index = index;
+          this.debugName = "Detune" + this.index + ": ";
+          this.text = gameObj.add.text(
+            16,
+            40 * (this.index + 1),
+            this.debugName + this.sound.detune,
+            { fontSize: "16px", fill: "#000" }
+          );
         },
-        turnLeft(){
-            if (this.sound.detune >= -tuningBound) 
-            {
-                this.tick.setAngle(this.tick.angle - rotationSpeed);
-                newVal = changeDetune(this.sound, -detuneSpeed);
-                this.text.setText(this.debugName + newVal);
-            }
+        turnLeft() {
+          if (this.sound.detune >= -tuningBound) {
+            this.tick.setAngle(this.tick.angle - rotationSpeed);
+            newVal = changeDetune(this.sound, -detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+          }
         },
-        turnRight(){
-            if (this.sound.detune <= tuningBound)
-            {
-                this.tick.setAngle(this.tick.angle + rotationSpeed);
-                newVal = changeDetune(this.sound, detuneSpeed);
-                this.text.setText(this.debugName + newVal);
-            }
+        turnRight() {
+          if (this.sound.detune <= tuningBound) {
+            this.tick.setAngle(this.tick.angle + rotationSpeed);
+            newVal = changeDetune(this.sound, detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+          }
         },
-        toggleOff(){
-            this.led.setVisible(false)
+        toggleOff() {
+          this.led.setVisible(false);
         },
-        toggleOn(){
-            this.led.setVisible(true)
+        toggleOn() {
+          this.led.setVisible(true);
         },
-        below: { x: 200+(200*this.index), y: 400},
-        restart(){
-            this.sound.restart();
+        below: { x: 200 + 200 * this.index, y: 400 },
+        restart() {
+          this.sound.restart();
         },
         tuned() {
-            return (this.sound.detune > -75 && this.sound.detune < 75) 
-        }
-    }
+          return this.sound.detune > -75 && this.sound.detune < 75;
+        },
+      };
 
-    var knob3 = {
+      var knob3 = {
         setSound(key) {
-            this.sound = gameObj.sound.add(key);
+          this.sound = gameObj.sound.add(key);
         },
-        initialize(soundName, index){          
-            this.tick = gameObj.add.image(200+(200*index), knobsY, 'knob-tick');
-            gameObj.add.image(200+(200*index), knobsY, 'knob-round');
-            gameObj.add.image(200+(200*index), knobsY, 'LEDOff');
-            this.led = gameObj.add.image(200+(200*index), knobsY, 'LEDOn');
-            this.led.setVisible(false);
-            this.sound.setDetune(randomDetune());
-            this.sound.play({
-                loop: true
-            });
-            this.index = index;
-            this.debugName = 'Detune' + this.index + ': ';
-            this.text = gameObj.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
-                { fontSize: '16px', fill: '#000' });
+        initialize(soundName, index) {
+          this.tick = gameObj.add.image(200 + 200 * index, knobsY, "knob-tick");
+          gameObj.add.image(200 + 200 * index, knobsY, "knob-round");
+          gameObj.add.image(200 + 200 * index, knobsY, "LEDOff");
+          this.led = gameObj.add.image(200 + 200 * index, knobsY, "LEDOn");
+          this.led.setVisible(false);
+          this.sound.setDetune(randomDetune());
+          this.sound.play({
+            loop: true,
+          });
+          this.index = index;
+          this.debugName = "Detune" + this.index + ": ";
+          this.text = gameObj.add.text(
+            16,
+            40 * (this.index + 1),
+            this.debugName + this.sound.detune,
+            { fontSize: "16px", fill: "#000" }
+          );
         },
-        turnLeft(){
-            if (this.sound.detune > -tuningBound) 
-            {
-                this.tick.setAngle(this.tick.angle - rotationSpeed);
-                newVal = changeDetune(this.sound, -detuneSpeed);
-                this.text.setText(this.debugName + newVal);
-            }
+        turnLeft() {
+          if (this.sound.detune > -tuningBound) {
+            this.tick.setAngle(this.tick.angle - rotationSpeed);
+            newVal = changeDetune(this.sound, -detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+          }
         },
-        turnRight(){
-            if (this.sound.detune < tuningBound)
-            {
-                this.tick.setAngle(this.tick.angle + rotationSpeed);
-                newVal = changeDetune(this.sound, detuneSpeed);
-                this.text.setText(this.debugName + newVal);
-            }
+        turnRight() {
+          if (this.sound.detune < tuningBound) {
+            this.tick.setAngle(this.tick.angle + rotationSpeed);
+            newVal = changeDetune(this.sound, detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+          }
         },
-        toggleOff(){
-            this.led.setVisible(false)
+        toggleOff() {
+          this.led.setVisible(false);
         },
-        toggleOn(){
-            this.led.setVisible(true)
+        toggleOn() {
+          this.led.setVisible(true);
         },
-        below: { x: 200+(200*this.index), y: 400},
-        restart(){
-            this.sound.restart();
+        below: { x: 200 + 200 * this.index, y: 400 },
+        restart() {
+          this.sound.restart();
         },
         tuned() {
-            return (this.sound.detune > -75 && this.sound.detune < 75) 
-        }
+          return this.sound.detune > -75 && this.sound.detune < 75;
+        },
+      };
 
-    }
+      var dialsY = 500;
+      var range = 300;
 
-    var dialsY = 500;
-    var range = 300;
-
-    var dial1 = {
+      var dial1 = {
         // X, drums and bass
         setSound(key) {
-            this.sound = gameObj.sound.add(key);
-            this.static = gameObj.sound.add('static');
+          this.sound = gameObj.sound.add(key);
+          this.static = gameObj.sound.add("static");
         },
-        initialize(index){          
-            this.tick = gameObj.add.image(200+(200*index), dialsY, 'knob-tick');
-            gameObj.add.image(200+(200*index), dialsY, 'knob-round');
-            gameObj.add.image(200+(200*index), dialsY, 'LEDOff');
-            this.led = gameObj.add.image(200+(200*index), dialsY, 'LEDOn');
-            this.led.setVisible(false);
-            this.sound.play({
-                loop: true,
-            });
-            this.static.play({
-                loop: true
-            });
-            this.index = index;
-            this.debugName = 'Detune' + this.index + ': ';
-            this.text = gameObj.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
-                { fontSize: '16px', fill: '#000' });
-            this.setVolume();
+        initialize(index) {
+          this.tick = gameObj.add.image(200 + 200 * index, dialsY, "knob-tick");
+          gameObj.add.image(200 + 200 * index, dialsY, "knob-round");
+          gameObj.add.image(200 + 200 * index, dialsY, "LEDOff");
+          this.led = gameObj.add.image(200 + 200 * index, dialsY, "LEDOn");
+          this.led.setVisible(false);
+          this.sound.play({
+            loop: true,
+          });
+          this.static.play({
+            loop: true,
+          });
+          this.index = index;
+          this.debugName = "Detune" + this.index + ": ";
+          this.text = gameObj.add.text(
+            16,
+            40 * (this.index + 1),
+            this.debugName + this.sound.detune,
+            { fontSize: "16px", fill: "#000" }
+          );
+          this.setVolume();
         },
-        turnLeft(){
-            // Left
-            if (crosshair.sprite.x > 0) 
-            {
-                this.tick.setAngle(this.tick.angle + rotationSpeed);
-                crosshair.sprite.x -= 1;
-            } else {
-                crosshair.sprite.x = 0;
-            }
-            this.setVolume();
+        turnLeft() {
+          // Left
+          if (crosshair.sprite.x > 0) {
+            this.tick.setAngle(this.tick.angle + rotationSpeed);
+            crosshair.sprite.x -= 1;
+          } else {
+            crosshair.sprite.x = 0;
+          }
+          this.setVolume();
         },
-        turnRight(){
-            // right
-            if (crosshair.sprite.x < 800) 
-            {
-                this.tick.setAngle(this.tick.angle - rotationSpeed);
-                crosshair.sprite.x += 1;
-            } else {
-                crosshair.sprite.x = 800;
-            }
-            this.setVolume();
+        turnRight() {
+          // right
+          if (crosshair.sprite.x < 800) {
+            this.tick.setAngle(this.tick.angle - rotationSpeed);
+            crosshair.sprite.x += 1;
+          } else {
+            crosshair.sprite.x = 800;
+          }
+          this.setVolume();
         },
-        toggleOff(){
-            this.led.setVisible(false)
+        toggleOff() {
+          this.led.setVisible(false);
         },
-        toggleOn(){
-            this.led.setVisible(true)
+        toggleOn() {
+          this.led.setVisible(true);
         },
-        setVolume(){
-            var distance = Math.abs(crosshair.sprite.x - target.x);
-            if (distance <= range) {
-                var vol = distance/range;
-                this.sound.setVolume(1-vol);
-                this.static.setVolume(vol);
-            } else {
-                this.sound.setVolume(0);
-                this.static.setVolume(1);
-            }
-        }
-    };
+        setVolume() {
+          var distance = Math.abs(crosshair.sprite.x - target.x);
+          if (distance <= range) {
+            var vol = distance / range;
+            this.sound.setVolume(1 - vol);
+            this.static.setVolume(vol);
+          } else {
+            this.sound.setVolume(0);
+            this.static.setVolume(1);
+          }
+        },
+      };
 
-    var dial2 = {
+      var dial2 = {
         // y, MELODY
         setSound(key) {
-            this.sound = gameObj.sound.add(key);
-            this.static = gameObj.sound.add('static');
+          this.sound = gameObj.sound.add(key);
+          this.static = gameObj.sound.add("static");
         },
-        initialize(index){          
-            this.tick = gameObj.add.image(200+(200*index), dialsY, 'knob-tick');
-            gameObj.add.image(200+(200*index), dialsY, 'knob-round');
-            gameObj.add.image(200+(200*index), dialsY, 'LEDOff');
-            this.led = gameObj.add.image(200+(200*index), dialsY, 'LEDOn');
-            this.led.setVisible(false);
-            this.sound.play({
-                loop: true,
-            });
-            this.static.play({
-                loop: true
-            });
-            this.index = index;
-            this.debugName = 'Detune' + this.index + ': ';
-            this.text = gameObj.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
-                { fontSize: '16px', fill: '#000' });
-                this.setVolume();
+        initialize(index) {
+          this.tick = gameObj.add.image(200 + 200 * index, dialsY, "knob-tick");
+          gameObj.add.image(200 + 200 * index, dialsY, "knob-round");
+          gameObj.add.image(200 + 200 * index, dialsY, "LEDOff");
+          this.led = gameObj.add.image(200 + 200 * index, dialsY, "LEDOn");
+          this.led.setVisible(false);
+          this.sound.play({
+            loop: true,
+          });
+          this.static.play({
+            loop: true,
+          });
+          this.index = index;
+          this.debugName = "Detune" + this.index + ": ";
+          this.text = gameObj.add.text(
+            16,
+            40 * (this.index + 1),
+            this.debugName + this.sound.detune,
+            { fontSize: "16px", fill: "#000" }
+          );
+          this.setVolume();
         },
-        turnLeft(){
-            // Up
-            if (crosshair.sprite.y > 0) 
-            {
-                this.tick.setAngle(this.tick.angle + rotationSpeed);
-                crosshair.sprite.y -= 1;
-            } else {
-                crosshair.sprite.y = 0;
-            }
-            this.setVolume();
+        turnLeft() {
+          // Up
+          if (crosshair.sprite.y > 0) {
+            this.tick.setAngle(this.tick.angle + rotationSpeed);
+            crosshair.sprite.y -= 1;
+          } else {
+            crosshair.sprite.y = 0;
+          }
+          this.setVolume();
         },
-        turnRight(){
-            // Down
-            if (crosshair.sprite.y < 600) 
-            {
-                this.tick.setAngle(this.tick.angle - rotationSpeed);
-                crosshair.sprite.y += 1;
-            } else {
-                crosshair.sprite.y = 600;
-            }
-            this.setVolume();
+        turnRight() {
+          // Down
+          if (crosshair.sprite.y < 600) {
+            this.tick.setAngle(this.tick.angle - rotationSpeed);
+            crosshair.sprite.y += 1;
+          } else {
+            crosshair.sprite.y = 600;
+          }
+          this.setVolume();
         },
-        toggleOff(){
-            this.led.setVisible(false)
+        toggleOff() {
+          this.led.setVisible(false);
         },
-        toggleOn(){
-            this.led.setVisible(true)
+        toggleOn() {
+          this.led.setVisible(true);
         },
-        setVolume(){
-            var distance = Math.abs(crosshair.sprite.y-target.y);
-            if (distance <= range) {
-                var vol = distance/range;
-                this.sound.setVolume(1-vol);
-                this.static.setVolume(vol);
-            } else {
-                this.sound.setVolume(0);
-                this.static.setVolume(1);
-            }
-        }
-    };
+        setVolume() {
+          var distance = Math.abs(crosshair.sprite.y - target.y);
+          if (distance <= range) {
+            var vol = distance / range;
+            this.sound.setVolume(1 - vol);
+            this.static.setVolume(vol);
+          } else {
+            this.sound.setVolume(0);
+            this.static.setVolume(1);
+          }
+        },
+      };
 
-    var crosshair = {
+      var crosshair = {
         create() {
-            this.sprite = gameObj.physics.add.sprite(400, 300, 'crosshair');
-            this.sprite.setCollideWorldBounds(true);
-        }
-    }
+          this.sprite = gameObj.physics.add.sprite(400, 300, "crosshair");
+          this.sprite.setCollideWorldBounds(true);
+        },
+      };
 
-    // KNOBS
-    var knobs = [ knob1 ];
-    function toggleKnobs()
-    {
-        knobIndex = knobIndex+1 > knobs.length-1 ? 0 : knobIndex+1;
+      // KNOBS
+      var knobs = [knob1];
+      function toggleKnobs() {
+        knobIndex = knobIndex + 1 > knobs.length - 1 ? 0 : knobIndex + 1;
         currentKnob = knobs[knobIndex];
-        for (i = 0; i < knobs.length; i++)
-        {
-                knobs[i].toggleOff();
+        for (i = 0; i < knobs.length; i++) {
+          knobs[i].toggleOff();
         }
         currentKnob.toggleOn();
-    }
-    var knobIndex = 0;
-    var currentKnob = knob1;
+      }
+      var knobIndex = 0;
+      var currentKnob = knob1;
 
-    function preload() {
+      function preload() {
         this.load.image("sky", "assets/images/sky.png");
-        this.load.image('knob-round', 'assets/images/knob-base.png');
-        this.load.image('knob-tick', 'assets/images/knob-tick.png');
-        this.load.image('button', 'assets/images/button.png');
-        this.load.image('LEDOff', 'assets/images/LED-off.png');
-        this.load.image('LEDOn', 'assets/images/LED-on.png');
-        this.load.image('crosshair', 'assets/images/map/crosshair.png');
-        this.load.image('dark-bg', 'assets/images/map/dark-bg.png');
-        this.load.image('target', 'assets/images/map/target.png');
+        this.load.image("knob-round", "assets/images/knob-base.png");
+        this.load.image("knob-tick", "assets/images/knob-tick.png");
+        this.load.image("button", "assets/images/button.png");
+        this.load.image("LEDOff", "assets/images/LED-off.png");
+        this.load.image("LEDOn", "assets/images/LED-on.png");
+        this.load.image("crosshair", "assets/images/map/crosshair.png");
+        this.load.image("dark-bg", "assets/images/map/dark-bg.png");
+        this.load.image("target", "assets/images/map/target.png");
 
+        this.load.audio("static", "assets/sounds/whitenoise_pitchbend.ogg");
+        this.load.audio("code1", "assets/sounds/code1.m4a");
+        this.load.audio("take2", "assets/sounds/Take2.ogg");
+        this.load.audio(
+          "spygroove_Gtr",
+          "assets/sounds/spygroove_Gtr-full.ogg"
+        );
+        this.load.audio(
+          "spygroove_bass",
+          "assets/sounds/spygroove_Bass-full.ogg"
+        );
+        this.load.audio(
+          "spygroove_drum",
+          "assets/sounds/spygroove_Drums-full.ogg"
+        );
+        this.load.audio(
+          "ChipTune_DrumBass",
+          "assets/sounds/ChipTune_Drum+Bass.ogg"
+        );
+        this.load.audio("ChipTune_Melody", "assets/sounds/ChipTune_Melody.ogg");
+      }
 
-        this.load.audio('static', 'assets/sounds/whitenoise_pitchbend.ogg');
-        this.load.audio('code1', 'assets/sounds/code1.m4a');
-        this.load.audio('take2', 'assets/sounds/Take2.ogg');
-        this.load.audio('spygroove_Gtr', 'assets/sounds/spygroove_Gtr-full.ogg');
-        this.load.audio('spygroove_bass', 'assets/sounds/spygroove_Bass-full.ogg');
-        this.load.audio('spygroove_drum', 'assets/sounds/spygroove_Drums-full.ogg');
-        this.load.audio('ChipTune_DrumBass', 'assets/sounds/ChipTune_Drum+Bass.ogg');
-        this.load.audio('ChipTune_Melody', 'assets/sounds/ChipTune_Melody.ogg');
-    }
-
-    function roundOne() {
-        knob1.initialize('spygroove_bass', 0);
+      function roundOne() {
+        knob1.initialize("spygroove_bass", 0);
         knob1.toggleOn();
-        r1txt = gameObj.add.text(300, 200, handlerText, { fontSize: '16px', fill: '#000' });
+        r1txt = gameObj.add.text(300, 200, handlerText, {
+          fontSize: "16px",
+          fill: "#000",
+        });
         round = 1;
-        currentKnob = knob1
-    }
+        currentKnob = knob1;
+      }
 
-    function roundTwo() {
-        knob2.initialize('spygroove_Gtr', 1);
-        knob3.initialize('spygroove_drum', 2);
-        knobs = [ knob1, knob2, knob3 ];
-        r2txt = gameObj.add.text(300, 400, roundTwoText, { fontSize: '16px', fill: '#000' });
+      function roundTwo() {
+        knob2.initialize("spygroove_Gtr", 1);
+        knob3.initialize("spygroove_drum", 2);
+        knobs = [knob1, knob2, knob3];
+        r2txt = gameObj.add.text(300, 400, roundTwoText, {
+          fontSize: "16px",
+          fill: "#000",
+        });
         round = 2;
-    }
+      }
 
-    function roundThree() {
+      function roundThree() {
         knob1.sound.stop();
         knob2.sound.stop();
         knob3.sound.stop();
         // Change music
-        gameObj.add.text(300, 460, endText, { fontSize: '16px', fill: '#000' });
-        code1 = gameObj.sound.add('code1');
+        gameObj.add.text(300, 460, endText, { fontSize: "16px", fill: "#000" });
+        code1 = gameObj.sound.add("code1");
         code1.play({
-            loop: true
+          loop: true,
         });
         round = 3;
-    }
+      }
 
-    function roundFour() {
+      function roundFour() {
         gameObj.add.image(400, 300, "dark-bg");
         knobs = [dial1, dial2];
         crosshair.create();
@@ -438,60 +462,58 @@
         dial1.toggleOn();
         currentKnob = dial1;
         round = 4;
-    }
+      }
 
-    var round = 0;
-    var target = {x: 150, y:200};
+      var round = 0;
+      var target = { x: 150, y: 200 };
 
-    function create() {
+      function create() {
         gameObj = this;
         this.add.image(400, 300, "sky");
-        this.add.text(300, 32, introText, { fontSize: '16px', fill: '#000' });
-        knob1.setSound('spygroove_bass');
-        knob2.setSound('spygroove_Gtr', );
-        knob3.setSound('spygroove_drum');
-        dial1.setSound('ChipTune_DrumBass');
-        dial2.setSound('ChipTune_Melody', );
+        this.add.text(300, 32, introText, { fontSize: "16px", fill: "#000" });
+        knob1.setSound("spygroove_bass");
+        knob2.setSound("spygroove_Gtr");
+        knob3.setSound("spygroove_drum");
+        dial1.setSound("ChipTune_DrumBass");
+        dial2.setSound("ChipTune_Melody");
 
-        static = this.sound.add('static');
-        static.setVolume(.3);
+        static = this.sound.add("static");
+        static.setVolume(0.3);
 
         let enterKey = this.input.keyboard.addKey(
           Phaser.Input.Keyboard.KeyCodes.ENTER
         );
         enterKey.on("down", function (key, event) {
-          if (round == 0)
-          {
-              roundOne(this);
+          if (round == 0) {
+            roundOne(this);
           } else if (round == 3) {
-              roundFour();
+            roundFour();
           }
         });
 
-        button = this.add.image(100, 500, 'button').setInteractive();
-        this.add.text(100, 500, 'Re-sync', { fontSize: '32px', fill: '#000' });
-        button.on('pointerdown', function (pointer) {
-            this.setTint(0x000000);
+        button = this.add.image(100, 500, "button").setInteractive();
+        this.add.text(100, 500, "Re-sync", { fontSize: "32px", fill: "#000" });
+        button.on("pointerdown", function (pointer) {
+          this.setTint(0x000000);
         });
-        button.on('pointerout', function (pointer) {
-            this.clearTint();
+        button.on("pointerout", function (pointer) {
+          this.clearTint();
         });
-        button.on('pointerup', function (pointer) {
-            this.clearTint();
-            for (i = 0; i < knobs.length; i++)
-            {
-                knobs[i].sound.stop();
-                knobs[i].sound.play();
+        button.on("pointerup", function (pointer) {
+          this.clearTint();
+          for (i = 0; i < knobs.length; i++) {
+            knobs[i].sound.stop();
+            knobs[i].sound.play();
+          }
+          if (round == 1) {
+            if (knob1.tuned()) {
+              roundTwo(this);
             }
-            if (round == 1){
-                if (knob1.tuned()) {
-                    roundTwo(this);
-                }
-            } else if (round == 2) {
-                if (knob1.tuned() && knob2.tuned() && knob3.tuned()) {
-                    roundThree();
-                }
+          } else if (round == 2) {
+            if (knob1.tuned() && knob2.tuned() && knob3.tuned()) {
+              roundThree();
             }
+          }
         });
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -501,65 +523,38 @@
         spaceKey.on("down", function (key, event) {
           toggleKnobs();
         });
+      }
 
-    }
-
-    function update() {
+      function update() {
         if (round > 0) {
-            if (cursors.left.isDown) {
-                currentKnob.turnLeft();
-            } else if (cursors.right.isDown) {
-                currentKnob.turnRight();
-            }
+          if (cursors.left.isDown) {
+            currentKnob.turnLeft();
+          } else if (cursors.right.isDown) {
+            currentKnob.turnRight();
+          }
         }
-    }
+      }
 
-
-
-    function setVolume(sound, change)
-    {
+      function setVolume(sound, change) {
         volume = sound.volume;
 
         volume += change;
         volume = Phaser.Math.Clamp(volume, 0, 1);
         sound.setVolume(volume);
         return sound.volume;
-        
-    }
+      }
 
-    function changeDetune(sound, change) {
+      function changeDetune(sound, change) {
         detune = sound.detune;
         detune += change;
         detune = Phaser.Math.Clamp(detune, -tuningBound, tuningBound);
         sound.setDetune(detune);
         return sound.detune;
-    }
+      }
 
-    function randomDetune(){
-        return Math.floor(Math.random() * tuningBound*2) - tuningBound;
-    }
-
-
+      function randomDetune() {
+        return Math.floor(Math.random() * tuningBound * 2) - tuningBound;
+      }
     </script>
-
-    <div class="container">
-      <div class="grid header">Our Amazing Game</div>
-      <div class="grid sidebar">
-        <!-- Buttons -->
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>7</button>
-        <button>8</button>
-      </div>
-      <div class="grid content" id="main-content"></div>
-      <div class="grid footer">
-        <!-- Dials for audio -->
-        <img src="assets/images/knob-round.png" alt="" class="dial" />
-      </div>
-    </div>
   </body>
 </html>
