@@ -43,9 +43,11 @@
 
       var knob1 = {
         // Must initialize in create
-
         initialize(game, soundName, index){
             game.add.image(200+(200*index), 300, 'knob-round');
+            game.add.image(200+(200*index), 300, 'LEDOff');
+            this.led = game.add.image(200+(200*index), 300, 'LEDOn');
+            this.led.setVisible(false)
             this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
             this.sound = game.sound.add(soundName);
             this.sound.setDetune(randomDetune());
@@ -66,6 +68,12 @@
             this.tick.setAngle(this.tick.angle + rotationSpeed);
             newVal = changeDetune(this.sound, detuneSpeed);
             this.text.setText(this.debugName + newVal);
+        },
+        toggleOff(){
+            this.led.setVisible(false)
+        },
+        toggleOn(){
+            this.led.setVisible(true)
         },
         below: { x: 200+(200*this.index), y: 400},
         restart(){
@@ -78,6 +86,9 @@
         // Must initialize in create
         initialize(game, soundName, index){
             game.add.image(200+(200*index), 300, 'knob-round');
+            game.add.image(200+(200*index), 300, 'LEDOff');
+            this.led = game.add.image(200+(200*index), 300, 'LEDOn');
+            this.led.setVisible(false)
             this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
             this.sound = game.sound.add(soundName);
             this.sound.setDetune(randomDetune());
@@ -91,17 +102,19 @@
         },
         turnLeft(){
             this.tick.setAngle(this.tick.angle - rotationSpeed);
-            // newVol = setVolume(this.sound, -soundSpeed);
-            // this.text.setText("Volume1: " + newVol);
             newVal = changeDetune(this.sound, -detuneSpeed);
             this.text.setText(this.debugName + newVal);
         },
         turnRight(){
             this.tick.setAngle(this.tick.angle + rotationSpeed);
-            // newVol = setVolume(this.sound, soundSpeed);
-            // this.text.setText("Volume1: " + newVol);
             newVal = changeDetune(this.sound, detuneSpeed);
             this.text.setText(this.debugName + newVal);
+        },
+        toggleOff(){
+            this.led.setVisible(false)
+        },
+        toggleOn(){
+            this.led.setVisible(true)
         },
         below: { x: 200+(200*this.index), y: 400},
         restart(){
@@ -113,6 +126,9 @@
         // Must initialize in create
         initialize(game, soundName, index){
             game.add.image(200+(200*index), 300, 'knob-round');
+            game.add.image(200+(200*index), 300, 'LEDOff');
+            this.led = game.add.image(200+(200*index), 300, 'LEDOn');
+            this.led.setVisible(false)
             this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
             this.sound = game.sound.add(soundName);
             this.sound.setDetune(randomDetune());
@@ -126,17 +142,19 @@
         },
         turnLeft(){
             this.tick.setAngle(this.tick.angle - rotationSpeed);
-            // newVol = setVolume(this.sound, -soundSpeed);
-            // this.text.setText("Volume1: " + newVol);
             newVal = changeDetune(this.sound, -detuneSpeed);
             this.text.setText(this.debugName + newVal);
         },
         turnRight(){
             this.tick.setAngle(this.tick.angle + rotationSpeed);
-            // newVol = setVolume(this.sound, soundSpeed);
-            // this.text.setText("Volume1: " + newVol);
             newVal = changeDetune(this.sound, detuneSpeed);
             this.text.setText(this.debugName + newVal);
+        },
+        toggleOff(){
+            this.led.setVisible(false)
+        },
+        toggleOn(){
+            this.led.setVisible(true)
         },
         below: { x: 200+(200*this.index), y: 400},
         restart(){
@@ -149,9 +167,13 @@
     function toggleKnobs()
     {
         knobIndex = knobIndex+1 > knobs.length-1 ? 0 : knobIndex+1;
-
         currentKnob = knobs[knobIndex];
         arrow.copyPosition(currentKnob.below);
+        for (i = 0; i < knobs.length; i++)
+        {
+                knobs[i].toggleOff();
+        }
+        currentKnob.toggleOn();
     }
       var knobIndex = 0;
       var currentKnob = knob1;
@@ -165,6 +187,8 @@
         this.load.image('knob-tick', 'assets/images/knob-handle.png');
         this.load.image('arrow', 'assets/images/arrow.png');
         this.load.image('button', 'assets/images/button.png');
+        this.load.image('LEDOff', 'assets/images/LED-off.png');
+        this.load.image('LEDOn', 'assets/images/LED-on.png');
         this.load.audio('static', 'assets/sounds/Static.m4a');
         this.load.audio('take2', 'assets/sounds/Take2.ogg');
         this.load.audio('spygroove_Gtr', 'assets/sounds/spygroove_Gtr.ogg');
@@ -195,6 +219,7 @@
         // ------ Real stuff below, broken green boxes above
         
         knob1.initialize(this, 'spygroove_bass', 0);
+        knob1.toggleOn();
         knob2.initialize(this, 'spygroove_Gtr', 1);
         knob3.initialize(this, 'spygroove_drum', 2);
 
