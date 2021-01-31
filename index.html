@@ -18,6 +18,7 @@ Hello World
 
     var rotationSpeed = 2;
     var soundSpeed = .006;
+    var detuneSpeed = soundSpeed*4500;
     var volume = 1;
 
     var config = {
@@ -41,57 +42,108 @@ Hello World
 
     var knob1 = {
         // Must initialize in create
-        create(game){
-            game.add.image(200, 300, 'knob-round');
-            this.tick = game.add.image(200, 300, 'knob-tick');
-            this.static = game.sound.add('static');
-            this.static.play({
+        initialize(game, soundName, index){
+            game.add.image(200+(200*index), 300, 'knob-round');
+            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
+            this.sound = game.sound.add(soundName);
+            this.sound.setDetune(randomDetune());
+            this.sound.play({
                 loop: true
             });
-            this.text = game.add.text(16, 16, 'volume: 1', { fontSize: '32px', fill: '#000' });
+            this.index = index;
+            this.debugName = 'Detune' + this.index + ': ';
+            this.text = game.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
+                { fontSize: '32px', fill: '#000' });
         },
         turnLeft(){
-            newVol = setVolume(this.static, -soundSpeed);
             this.tick.setAngle(this.tick.angle - rotationSpeed);
-            this.text.setText("Volume1: " + newVol);
+            newVal = changeDetune(this.sound, -detuneSpeed);
+            this.text.setText(this.debugName + newVal);
         },
         turnRight(){
             this.tick.setAngle(this.tick.angle + rotationSpeed);
-            newVol = setVolume(this.static, soundSpeed);
-            this.text.setText("Volume1: " + newVol);
+            newVal = changeDetune(this.sound, detuneSpeed);
+            this.text.setText(this.debugName + newVal);
         },
-        below: { x: 200, y: 400},
+        below: { x: 200+(200*this.index), y: 400},
+        restart(){
+            this.sound.restart();
+        }
+        
     }
 
-    
     var knob2 = {
         // Must initialize in create
-        create(game){
-            round = game.add.image(400, 300, 'knob-round');
-            round.setTint(0xff0000);
-            this.tick = game.add.image(400, 300, 'knob-tick');
-            this.tick.setTint(0xff0000);
-            this.static = game.sound.add('take2');
-            this.static.play({
+        initialize(game, soundName, index){
+            game.add.image(200+(200*index), 300, 'knob-round');
+            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
+            this.sound = game.sound.add(soundName);
+            this.sound.setDetune(randomDetune());
+            this.sound.play({
                 loop: true
             });
-            this.text = game.add.text(16, 64, 'volume: 2', { fontSize: '32px', fill: '#000' });
+            this.index = index;
+            this.debugName = 'Detune' + this.index + ': ';
+            this.text = game.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
+                { fontSize: '32px', fill: '#000' });
         },
         turnLeft(){
             this.tick.setAngle(this.tick.angle - rotationSpeed);
-            newVol = setVolume(this.static, -soundSpeed);
-            this.text.setText("Volume2: " + newVol);
+            // newVol = setVolume(this.sound, -soundSpeed);
+            // this.text.setText("Volume1: " + newVol);
+            newVal = changeDetune(this.sound, -detuneSpeed);
+            this.text.setText(this.debugName + newVal);
         },
         turnRight(){
             this.tick.setAngle(this.tick.angle + rotationSpeed);
-            newVol = setVolume(this.static, soundSpeed);
-            this.text.setText("Volume2: " + newVol);
+            // newVol = setVolume(this.sound, soundSpeed);
+            // this.text.setText("Volume1: " + newVol);
+            newVal = changeDetune(this.sound, detuneSpeed);
+            this.text.setText(this.debugName + newVal);
         },
-        below: { x: 400, y: 400}
+        below: { x: 200+(200*this.index), y: 400},
+        restart(){
+            this.sound.restart();
+        }
     }
 
+    var knob3 = {
+        // Must initialize in create
+        initialize(game, soundName, index){
+            game.add.image(200+(200*index), 300, 'knob-round');
+            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
+            this.sound = game.sound.add(soundName);
+            this.sound.setDetune(randomDetune());
+            this.sound.play({
+                loop: true
+            });
+            this.index = index;
+            this.debugName = 'Detune' + this.index + ': ';
+            this.text = game.add.text(16, 40*(this.index+1), this.debugName + this.sound.detune, 
+                { fontSize: '32px', fill: '#000' });
+        },
+        turnLeft(){
+            this.tick.setAngle(this.tick.angle - rotationSpeed);
+            // newVol = setVolume(this.sound, -soundSpeed);
+            // this.text.setText("Volume1: " + newVol);
+            newVal = changeDetune(this.sound, -detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+        },
+        turnRight(){
+            this.tick.setAngle(this.tick.angle + rotationSpeed);
+            // newVol = setVolume(this.sound, soundSpeed);
+            // this.text.setText("Volume1: " + newVol);
+            newVal = changeDetune(this.sound, detuneSpeed);
+            this.text.setText(this.debugName + newVal);
+        },
+        below: { x: 200+(200*this.index), y: 400},
+        restart(){
+            this.sound.restart();
+        }
+    }
 
-    var knobs = [knob1, knob2];
+    // KNOBS
+    var knobs = [ knob1, knob2, knob3 ];
     function toggleKnobs()
     {
         knobIndex = knobIndex+1 > knobs.length-1 ? 0 : knobIndex+1;
@@ -111,8 +163,12 @@ Hello World
         this.load.image('knob-round', 'assets/images/knob-round.png');
         this.load.image('knob-tick', 'assets/images/knob-handle.png');
         this.load.image('arrow', 'assets/images/arrow.png');
+        this.load.image('button', 'assets/images/button.png');
         this.load.audio('static', 'assets/sounds/Static.m4a');
         this.load.audio('take2', 'assets/sounds/Take2.ogg');
+        this.load.audio('spygroove_Gtr', 'assets/sounds/spygroove_Gtr.ogg');
+        this.load.audio('spygroove_bass', 'assets/sounds/spygroove_bass.ogg');
+        this.load.audio('spygroove_drum', 'assets/sounds/spygroove_drum.ogg');
     }
 
     function create ()
@@ -137,10 +193,30 @@ Hello World
 
         // ------ Real stuff below, broken green boxes above
         
-        knob1.create(this);
-        knob2.create(this);
+        knob1.initialize(this, 'spygroove_bass', 0);
+        knob2.initialize(this, 'spygroove_Gtr', 1);
+        knob3.initialize(this, 'spygroove_drum', 2);
+
         arrow = this.add.image(knob1.below.x, knob1.below.y, 'arrow');
         arrow.setScale(5);
+        static = this.sound.add('static');
+        static.setVolume(.3);
+        button = this.add.image(100, 500, 'button').setInteractive()    ;
+        this.add.text(100, 500, 'Re-sync', { fontSize: '32px', fill: '#000' });
+        button.on('pointerdown', function (pointer) {
+            this.setTint(0x000000);
+        });
+        button.on('pointerout', function (pointer) {
+            this.clearTint();
+        });
+        button.on('pointerup', function (pointer) {
+            this.clearTint();
+            for (i = 0; i < knobs.length; i++)
+            {
+                knobs[i].sound.stop();
+                knobs[i].sound.play();
+            }
+        });
 
         cursors = this.input.keyboard.createCursorKeys();
         let spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -167,6 +243,7 @@ Hello World
 
     function setVolume(sound, change)
     {
+        volume = sound.volume;
         volume += change;
         volume = Phaser.Math.Clamp(volume, 0, 1);
         sound.setVolume(volume);
@@ -174,7 +251,18 @@ Hello World
         
     }
 
-    
+    function changeDetune(sound, change) {
+        detune = sound.detune;
+        detune += change;
+        detune = Phaser.Math.Clamp(detune, -2000, 2000);
+        sound.setDetune(detune);
+        return sound.detune;
+    }
+
+    function randomDetune(){
+        return Math.floor(Math.random() * 4000) - 2000;
+    }
+
 
 
     </script>
