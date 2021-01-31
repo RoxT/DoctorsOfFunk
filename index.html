@@ -41,12 +41,12 @@
 
     var knob1 = {
         // Must initialize in create
-        initialize(game, soundName, index){
+        initialize(game, soundName, index){          
+            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
             game.add.image(200+(200*index), 300, 'knob-round');
             game.add.image(200+(200*index), 300, 'LEDOff');
             this.led = game.add.image(200+(200*index), 300, 'LEDOn');
-            this.led.setVisible(false)
-            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
+            this.led.setVisible(false);
             this.sound = game.sound.add(soundName);
             this.sound.setDetune(randomDetune());
             this.sound.play({
@@ -77,17 +77,16 @@
         restart(){
             this.sound.restart();
         }
-        
     }
 
     var knob2 = {
         // Must initialize in create
-        initialize(game, soundName, index){
+        initialize(game, soundName, index){          
+            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
             game.add.image(200+(200*index), 300, 'knob-round');
             game.add.image(200+(200*index), 300, 'LEDOff');
             this.led = game.add.image(200+(200*index), 300, 'LEDOn');
-            this.led.setVisible(false)
-            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
+            this.led.setVisible(false);
             this.sound = game.sound.add(soundName);
             this.sound.setDetune(randomDetune());
             this.sound.play({
@@ -121,13 +120,12 @@
     }
 
     var knob3 = {
-        // Must initialize in create
-        initialize(game, soundName, index){
+        initialize(game, soundName, index){          
+            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
             game.add.image(200+(200*index), 300, 'knob-round');
             game.add.image(200+(200*index), 300, 'LEDOff');
             this.led = game.add.image(200+(200*index), 300, 'LEDOn');
-            this.led.setVisible(false)
-            this.tick = game.add.image(200+(200*index), 300, 'knob-tick');
+            this.led.setVisible(false);
             this.sound = game.sound.add(soundName);
             this.sound.setDetune(randomDetune());
             this.sound.play({
@@ -181,8 +179,8 @@
         this.load.image("logo", "assets/sprites/phaser3-logo.png");
         this.load.image("red", "assets/particles/red.png");
 
-        this.load.image('knob-round', 'assets/images/knob-round.png');
-        this.load.image('knob-tick', 'assets/images/knob-handle.png');
+        this.load.image('knob-round', 'assets/images/knob-base.png');
+        this.load.image('knob-tick', 'assets/images/knob-tick.png');
         this.load.image('arrow', 'assets/images/arrow.png');
         this.load.image('button', 'assets/images/button.png');
         this.load.image('LEDOff', 'assets/images/LED-off.png');
