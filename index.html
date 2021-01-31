@@ -41,7 +41,7 @@
 
       var game = new Phaser.Game(config);
 
-      var knob1 = {
+    var knob1 = {
         // Must initialize in create
         initialize(game, soundName, index){
             game.add.image(200+(200*index), 300, 'knob-round');
@@ -175,8 +175,8 @@
         }
         currentKnob.toggleOn();
     }
-      var knobIndex = 0;
-      var currentKnob = knob1;
+    var knobIndex = 0;
+    var currentKnob = knob1;
 
     function preload() {
         this.load.image("sky", "assets/images/sky.png");
@@ -191,9 +191,9 @@
         this.load.image('LEDOn', 'assets/images/LED-on.png');
         this.load.audio('static', 'assets/sounds/Static.m4a');
         this.load.audio('take2', 'assets/sounds/Take2.ogg');
-        this.load.audio('spygroove_Gtr', 'assets/sounds/spygroove_Gtr.ogg');
-        this.load.audio('spygroove_bass', 'assets/sounds/spygroove_bass.ogg');
-        this.load.audio('spygroove_drum', 'assets/sounds/spygroove_drum.ogg');
+        this.load.audio('spygroove_Gtr', 'assets/sounds/spygroove_Gtr-full.ogg');
+        this.load.audio('spygroove_bass', 'assets/sounds/spygroove_Bass-full.ogg');
+        this.load.audio('spygroove_drum', 'assets/sounds/spygroove_Drums-full.ogg');
     }
 
 
@@ -227,7 +227,8 @@
         arrow.setScale(5);
         static = this.sound.add('static');
         static.setVolume(.3);
-        button = this.add.image(100, 500, 'button').setInteractive()    ;
+
+        button = this.add.image(100, 500, 'button').setInteractive();
         this.add.text(100, 500, 'Re-sync', { fontSize: '32px', fill: '#000' });
         button.on('pointerdown', function (pointer) {
             this.setTint(0x000000);
