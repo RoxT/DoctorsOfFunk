@@ -1,133 +1,129 @@
-
 <!DOCTYPE html>
-<html>
-    <head>
-        <!--<script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>-->
-        <!--<script src="//cdn.jsdelivr.net/npm/phaser@3.52.0/dist/phaser.js"></script>-->
-        <meta charset="UTF-8" />
-        <title>Global Game Jam 2021</title>
-        <script type="text/javascript" src="js/phaser.min.js"></script>
-    </head>
+<html lang="en">
+  <head>
+    <!--<script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>-->
+    <!--<script src="//cdn.jsdelivr.net/npm/phaser@3.52.0/dist/phaser.js"></script>-->
+    <meta charset="UTF-8" />
+    <title>Global Game Jam 2021</title>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+  </head>
 
-    
-<body>
+  <body>
+    Hello World
 
-Hello World
+    <script>
+      var rotationSpeed = 2;
+      var soundSpeed = 0.006;
+      var volume = 1;
 
-<script>
-
-    var rotationSpeed = 2;
-    var soundSpeed = .006;
-    var volume = 1;
-
-    var config = {
+      var config = {
         type: Phaser.AUTO,
         width: 800,
         height: 600,
         physics: {
-            default: 'arcade',
-            arcade: {
-                gravity: { y: 200 }
-            }
+          default: "arcade",
+          arcade: {
+            gravity: { y: 200 },
+          },
         },
         scene: {
-            preload: preload,
-            create: create,
-            update: update
-        }
-    };
+          preload: preload,
+          create: create,
+          update: update,
+        },
+      };
 
-    var game = new Phaser.Game(config);
+      var game = new Phaser.Game(config);
 
-    var knob1 = {
+      var knob1 = {
         // Must initialize in create
-        create(game){
-            game.add.image(200, 300, 'knob-round');
-            this.tick = game.add.image(200, 300, 'knob-tick');
-            this.static = game.sound.add('static');
-            this.static.play({
-                loop: true
-            });
-            this.text = game.add.text(16, 16, 'volume: 1', { fontSize: '32px', fill: '#000' });
+        create(game) {
+          game.add.image(200, 300, "knob-round");
+          this.tick = game.add.image(200, 300, "knob-tick");
+          this.static = game.sound.add("static");
+          this.static.play({
+            loop: true,
+          });
+          this.text = game.add.text(16, 16, "volume: 1", {
+            fontSize: "32px",
+            fill: "#000",
+          });
         },
-        turnLeft(){
-            newVol = setVolume(this.static, -soundSpeed);
-            this.tick.setAngle(this.tick.angle - rotationSpeed);
-            this.text.setText("Volume1: " + newVol);
+        turnLeft() {
+          newVol = setVolume(this.static, -soundSpeed);
+          this.tick.setAngle(this.tick.angle - rotationSpeed);
+          this.text.setText("Volume1: " + newVol);
         },
-        turnRight(){
-            this.tick.setAngle(this.tick.angle + rotationSpeed);
-            newVol = setVolume(this.static, soundSpeed);
-            this.text.setText("Volume1: " + newVol);
+        turnRight() {
+          this.tick.setAngle(this.tick.angle + rotationSpeed);
+          newVol = setVolume(this.static, soundSpeed);
+          this.text.setText("Volume1: " + newVol);
         },
-        below: { x: 200, y: 400},
-    }
+        below: { x: 200, y: 400 },
+      };
 
-    
-    var knob2 = {
+      var knob2 = {
         // Must initialize in create
-        create(game){
-            round = game.add.image(400, 300, 'knob-round');
-            round.setTint(0xff0000);
-            this.tick = game.add.image(400, 300, 'knob-tick');
-            this.tick.setTint(0xff0000);
-            this.static = game.sound.add('take2');
-            this.static.play({
-                loop: true
-            });
-            this.text = game.add.text(16, 64, 'volume: 2', { fontSize: '32px', fill: '#000' });
+        create(game) {
+          round = game.add.image(400, 300, "knob-round");
+          round.setTint(0xff0000);
+          this.tick = game.add.image(400, 300, "knob-tick");
+          this.tick.setTint(0xff0000);
+          this.static = game.sound.add("take2");
+          this.static.play({
+            loop: true,
+          });
+          this.text = game.add.text(16, 64, "volume: 2", {
+            fontSize: "32px",
+            fill: "#000",
+          });
         },
-        turnLeft(){
-            this.tick.setAngle(this.tick.angle - rotationSpeed);
-            newVol = setVolume(this.static, -soundSpeed);
-            this.text.setText("Volume2: " + newVol);
+        turnLeft() {
+          this.tick.setAngle(this.tick.angle - rotationSpeed);
+          newVol = setVolume(this.static, -soundSpeed);
+          this.text.setText("Volume2: " + newVol);
         },
-        turnRight(){
-            this.tick.setAngle(this.tick.angle + rotationSpeed);
-            newVol = setVolume(this.static, soundSpeed);
-            this.text.setText("Volume2: " + newVol);
+        turnRight() {
+          this.tick.setAngle(this.tick.angle + rotationSpeed);
+          newVol = setVolume(this.static, soundSpeed);
+          this.text.setText("Volume2: " + newVol);
         },
-        below: { x: 400, y: 400}
-    }
+        below: { x: 400, y: 400 },
+      };
 
-
-    var knobs = [knob1, knob2];
-    function toggleKnobs()
-    {
-        knobIndex = knobIndex+1 > knobs.length-1 ? 0 : knobIndex+1;
+      var knobs = [knob1, knob2];
+      function toggleKnobs() {
+        knobIndex = knobIndex + 1 > knobs.length - 1 ? 0 : knobIndex + 1;
         currentKnob = knobs[knobIndex];
         arrow.copyPosition(currentKnob.below);
-    } 
-    var knobIndex = 0;
-    var currentKnob = knob1;
+      }
+      var knobIndex = 0;
+      var currentKnob = knob1;
 
-    function preload ()
-    {
+      function preload() {
+        this.load.image("sky", "assets/images/sky.png");
+        this.load.image("logo", "assets/sprites/phaser3-logo.png");
+        this.load.image("red", "assets/particles/red.png");
 
-        this.load.image('sky', 'assets/images/sky.png');
-        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        this.load.image('red', 'assets/particles/red.png');
+        this.load.image("knob-round", "assets/images/knob-round.png");
+        this.load.image("knob-tick", "assets/images/knob-handle.png");
+        this.load.image("arrow", "assets/images/arrow.png");
+        this.load.audio("static", "assets/sounds/Static.m4a");
+        this.load.audio("take2", "assets/sounds/Take2.ogg");
+      }
 
-        this.load.image('knob-round', 'assets/images/knob-round.png');
-        this.load.image('knob-tick', 'assets/images/knob-handle.png');
-        this.load.image('arrow', 'assets/images/arrow.png');
-        this.load.audio('static', 'assets/sounds/Static.m4a');
-        this.load.audio('take2', 'assets/sounds/Take2.ogg');
-    }
+      function create() {
+        this.add.image(400, 300, "sky");
 
-    function create ()
-    {
-        this.add.image(400, 300, 'sky');
-
-        var particles = this.add.particles('red');
+        var particles = this.add.particles("red");
 
         var emitter = particles.createEmitter({
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD'
+          speed: 100,
+          scale: { start: 1, end: 0 },
+          blendMode: "ADD",
         });
 
-        var logo = this.physics.add.image(400, 100, 'logo');
+        var logo = this.physics.add.image(400, 100, "logo");
 
         logo.setVelocity(100, 200);
         logo.setBounce(1, 1);
@@ -136,47 +132,35 @@ Hello World
         emitter.startFollow(logo);
 
         // ------ Real stuff below, broken green boxes above
-        
+
         knob1.create(this);
         knob2.create(this);
-        arrow = this.add.image(knob1.below.x, knob1.below.y, 'arrow');
+        arrow = this.add.image(knob1.below.x, knob1.below.y, "arrow");
         arrow.setScale(5);
 
         cursors = this.input.keyboard.createCursorKeys();
-        let spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        spaceKey.on('down', function (key, event) {
-            toggleKnobs(); 
+        let spaceKey = this.input.keyboard.addKey(
+          Phaser.Input.Keyboard.KeyCodes.SPACE
+        );
+        spaceKey.on("down", function (key, event) {
+          toggleKnobs();
         });
+      }
 
-    }
-
-
-    function update()
-    {
-        if (cursors.left.isDown)
-        {
-            currentKnob.turnLeft()
+      function update() {
+        if (cursors.left.isDown) {
+          currentKnob.turnLeft();
+        } else if (cursors.right.isDown) {
+          currentKnob.turnRight();
         }
-        else if (cursors.right.isDown)
-        {
-            currentKnob.turnRight();
-        }
+      }
 
-
-    }
-
-    function setVolume(sound, change)
-    {
+      function setVolume(sound, change) {
         volume += change;
         volume = Phaser.Math.Clamp(volume, 0, 1);
         sound.setVolume(volume);
         return sound.volume;
-        
-    }
-
-    
-
-
+      }
     </script>
-</body>
+  </body>
 </html>
