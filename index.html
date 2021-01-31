@@ -51,10 +51,11 @@
 
       var endText = 
         "That's it Agent! You found it!\n" +
-        "Use your enter key and lets get out of here!";
+        "Lets get out of here!";
 
       var credits = 
-        "Programming and art: Dr. Natalie Funk and Roxanne Taylor\n" +
+        "Programming and art: Dr. Natalie Funk \n" +
+        "and Roxanne Taylor\n" +
         "Music: Gyle Ifill\n" +
         "Thanks you for playing, be nice to robots <3";
 
@@ -246,7 +247,7 @@
       };
 
     var dialsY = 500;
-    var dialsX = 75;
+    var dialsX = 80;
     var range = 300;
 
       var dial1 = {
@@ -494,6 +495,7 @@
         noise.setVisible(false);
         gameObj.add.image(400, 500, "fauxwood");
         endText = gameObj.add.text(300, 460, endText, { fontSize: '16px', fill: '#000' });
+        gameObj.add.text(300, 510, credits, { fontSize: '16px', fill: '#000' });
         round = 5;
     }
 
@@ -501,7 +503,7 @@
         mapText.setVisible(false);
         endText.setVisible(false);
         gameObj.add.image(400, 500, "fauxwood");
-        gameObj.add.text(200, 460, credits, { fontSize: '16px', fill: '#000' });
+
     }
 
     function checkFound() {
@@ -541,7 +543,6 @@
               roundSix();
           }
         });
-
         button = this.add.image(100, 500, "button").setInteractive();
         this.add.text(100, 500, "Re-sync", { fontSize: "32px", fill: "#000" });
         button.on("pointerdown", function (pointer) {
