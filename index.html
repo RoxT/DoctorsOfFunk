@@ -37,7 +37,26 @@
         "frequencies that need to be tuned. \n" + 
         "Use your space bar to toggle between them.";
 
-      var endText = "You did it! 80's dance party starts now! Press Enter to continue"; 
+      var betweenText = 
+        "Do you hear that? Its the code for the map, \n" +
+        "next we'll have to follow it. Use your enter\n" +
+        "key to interface directly with the map.\n"; 
+
+      var mapText = 
+        "Handler: Wow, that's a lot of static. \n" +
+        "Try turning your knobs to move your \n" +
+        "crosshair and locate the underground\n" + 
+        "facility. The sound should start to clear\n" +
+        "when you get close";
+
+      var endText = 
+        "That's it Agent! You found it!\n" +
+        "Use your enter key and lets get out of here!";
+
+      var credits = 
+        "Programming and art: Dr. Natalie Funk and Roxanne Taylor\n" +
+        "Music: Gyle Ifill\n" +
+        "Thanks you for playing, be nice to robots <3";
 
       var rotationSpeed = 2;
       var detuneSpeed = 1;
@@ -65,7 +84,7 @@
       var game = new Phaser.Game(config);
 
       var knobsY = 350;
-      var tuningBound = 1000;
+      var tuningBound = 500;
 
     var knob1 = {
         // Must initialize in create
@@ -223,6 +242,7 @@
     }
 
     var dialsY = 500;
+    var dialsX = 75;
     var range = 300;
 
     var dial1 = {
@@ -232,10 +252,10 @@
             this.static = gameObj.sound.add('static');
         },
         initialize(index){          
-            this.tick = gameObj.add.image(200+(200*index), dialsY, 'knob-tick');
-            gameObj.add.image(200+(200*index), dialsY, 'knob-round');
-            gameObj.add.image(200+(200*index), dialsY, 'LEDOff');
-            this.led = gameObj.add.image(200+(200*index), dialsY, 'LEDOn');
+            this.tick = gameObj.add.image(dialsX+(dialsX*index), dialsY, 'knob-tick');
+            gameObj.add.image(dialsX+(dialsX*index), dialsY, 'knob-round');
+            gameObj.add.image(dialsX+(dialsX*index), dialsY, 'LEDOff');
+            this.led = gameObj.add.image(dialsX+(dialsX*index), dialsY, 'LEDOn');
             this.led.setVisible(false);
             this.sound.play({
                 loop: true,
@@ -287,6 +307,7 @@
                 this.sound.setVolume(0);
                 this.static.setVolume(1);
             }
+            checkFound();
         }
     };
 
@@ -297,10 +318,10 @@
             this.static = gameObj.sound.add('static');
         },
         initialize(index){          
-            this.tick = gameObj.add.image(200+(200*index), dialsY, 'knob-tick');
-            gameObj.add.image(200+(200*index), dialsY, 'knob-round');
-            gameObj.add.image(200+(200*index), dialsY, 'LEDOff');
-            this.led = gameObj.add.image(200+(200*index), dialsY, 'LEDOn');
+            this.tick = gameObj.add.image(dialsX+(dialsX*index), dialsY, 'knob-tick');
+            gameObj.add.image(dialsX+(dialsX*index), dialsY, 'knob-round');
+            gameObj.add.image(dialsX+(dialsX*index), dialsY, 'LEDOff');
+            this.led = gameObj.add.image(dialsX+(dialsX*index), dialsY, 'LEDOn');
             this.led.setVisible(false);
             this.sound.play({
                 loop: true,
@@ -352,12 +373,13 @@
                 this.sound.setVolume(0);
                 this.static.setVolume(1);
             }
+            checkFound();
         }
     };
 
     var crosshair = {
         create() {
-            this.sprite = gameObj.physics.add.sprite(400, 300, 'crosshair');
+            this.sprite = gameObj.physics.add.sprite(400, 380, 'crosshair');
             this.sprite.setCollideWorldBounds(true);
         }
     }
@@ -387,10 +409,13 @@
         this.load.image('crosshair', 'assets/images/map/crosshair.png');
         this.load.image('dark-bg', 'assets/images/map/dark-bg.png');
         this.load.image('target', 'assets/images/map/target.png');
+        this.load.image('fauxwood', 'assets/images/fauxwood.png');
+        this.load.image('noise', 'assets/images/noise.png');
+        this.load.image('subwaymap', 'assets/images/subwaymap.png');
 
 
         this.load.audio('static', 'assets/sounds/whitenoise_pitchbend.ogg');
-        this.load.audio('code1', 'assets/sounds/code1.m4a');
+        this.load.audio('code1', 'assets/sounds/code2.m4a');
         this.load.audio('take2', 'assets/sounds/Take2.ogg');
         this.load.audio('spygroove_Gtr', 'assets/sounds/spygroove_Gtr-full.ogg');
         this.load.audio('spygroove_bass', 'assets/sounds/spygroove_Bass-full.ogg');
@@ -414,13 +439,13 @@
         r2txt = gameObj.add.text(300, 400, roundTwoText, { fontSize: '16px', fill: '#000' });
         round = 2;
     }
-
+    
     function roundThree() {
         knob1.sound.stop();
         knob2.sound.stop();
         knob3.sound.stop();
         // Change music
-        gameObj.add.text(300, 460, endText, { fontSize: '16px', fill: '#000' });
+        gameObj.add.text(300, 460, betweenText, { fontSize: '16px', fill: '#000' });
         code1 = gameObj.sound.add('code1');
         code1.play({
             loop: true
@@ -429,17 +454,43 @@
     }
 
     function roundFour() {
-        gameObj.add.image(400, 300, "dark-bg");
+        gameObj.add.image(400, 200, "subwaymap");
+        gameObj.add.image(400, 500, "fauxwood");
         knobs = [dial1, dial2];
-        crosshair.create();
+        noise = gameObj.add.image(400, 200, "noise");
         target = gameObj.add.image(target.x, target.y, "target");
+        crosshair.create();
+        mapText = gameObj.add.text(350, 416, mapText, { fontSize: '16px', fill: '#000' });
         dial1.initialize(0);
         dial2.initialize(1);
         dial1.toggleOn();
         currentKnob = dial1;
         round = 4;
     }
+    
+    function roundFive(){
+        noise.setVisible(false);
+        gameObj.add.image(400, 500, "fauxwood");
+        endText = gameObj.add.text(300, 460, endText, { fontSize: '16px', fill: '#000' });
+        round = 5;
+    }
 
+    function roundSix() {
+        mapText.setVisible(false);
+        endText.setVisible(false);
+        gameObj.add.image(400, 500, "fauxwood");
+        gameObj.add.text(200, 460, credits, { fontSize: '16px', fill: '#000' });
+    }
+
+    function checkFound() {
+        var disX = Math.abs(crosshair.sprite.x-target.x);
+        var disY = Math.abs(crosshair.sprite.y-target.y);
+
+        if(disX < 3 && disY < 3) {
+            roundFive();
+        }
+    }
+    
     var round = 0;
     var target = {x: 150, y:200};
 
@@ -452,7 +503,7 @@
         knob3.setSound('spygroove_drum');
         dial1.setSound('ChipTune_DrumBass');
         dial2.setSound('ChipTune_Melody', );
-
+        
         static = this.sound.add('static');
         static.setVolume(.3);
 
@@ -465,6 +516,8 @@
               roundOne(this);
           } else if (round == 3) {
               roundFour();
+          } else if (round == 5) {
+              roundSix();
           }
         });
 
@@ -538,6 +591,7 @@
     function randomDetune(){
         return Math.floor(Math.random() * tuningBound*2) - tuningBound;
     }
+
 
 
     </script>
