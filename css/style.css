@@ -3,3 +3,23 @@ body {
   font-family: "Open Sans", sans-serif;
   text-align: center;
 }
+
+.grid {
+  background-color: #444;
+  color: #fff;
+  padding: 25px;
+  font-size: 3rem;
+}
+
+.content {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  /* background: #f5c531; */
+  height: 600px;
+  border-radius: 9%;
+  background-color: #111;
+  color: green;
+  font-family: Courier, monospace;
+}
